@@ -4,15 +4,15 @@
 
 'use strict';
 
-let changeColor = document.getElementById('changeColor');
+let toggleOnOffBtn = document.getElementById('toggleOnOffBtn');
 
-chrome.storage.sync.get('color', function(data) {
-  changeColor.style.backgroundColor = data.color;
-  changeColor.setAttribute('value', data.color);
-});
+chrome.storage.sync.get("isDisabled", function (data) {
+  toggleOnOffBtn.checked = !data.isDisabled;
+})
 
-changeColor.onclick = function(element) {
-  let color = element.target.value;
-    chrome.tabs.executeScript(
-        {code: 'document.body.style.backgroundColor = "' + color + '";'});
+
+toggleOnOffBtn.onclick = function toggleOnOff(btn) {
+  let onOffState = !document.getElementById('toggleOnOffBtn').checked;
+  chrome.storage.sync.set({isDisabled: onOffState})
 };
+
