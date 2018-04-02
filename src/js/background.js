@@ -9,7 +9,7 @@ let isDisabled = false;
 
 
 chrome.runtime.onStartup.addListener(function () {
-    console.log("Doing things")
+    -
     chrome.storage.sync.get('isDisabled', function (data) {
         isDisabled = data.isDisabled;
     });
@@ -17,6 +17,11 @@ chrome.runtime.onStartup.addListener(function () {
 
 
 chrome.runtime.onInstalled.addListener(function () {
+
+    chrome.storage.sync.get('isDisabled', function (data) {
+        isDisabled = data.isDisabled || false;
+    });
+
     chrome.storage.onChanged.addListener(monitorIsDisabled);
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
         chrome.declarativeContent.onPageChanged.addRules([{
@@ -46,7 +51,7 @@ function unExcludeResults(requestDetails) {
     let searchQuery = fullQueryString.q || fullQueryString.oq;
 
     searchQuery = searchQuery.replace(/\-site:\*\.pinterest\.\*/, "");
-    console.log("replaced", searchQuery);
+
 
     fullQueryString.q = searchQuery;
     fullQueryString.oq = searchQuery;
