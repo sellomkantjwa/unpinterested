@@ -1,0 +1,28 @@
+{
+  "name": "Unpinterest!",
+  "version": "1.0",
+  "description": "Remove pinterest from Google search results",
+  "manifest_version": 2,
+  "permissions": [
+    "storage",
+    "declarativeContent",
+    "activeTab",
+    "webRequest",
+    "webRequestBlocking",
+    "*://*/"
+  ],
+  "background": {
+    "scripts": [
+      "background.bundle.js"
+    ]
+  },
+  "page_action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "get_started16.png",
+    "32": "get_started32.png",
+    "48": "get_started48.png"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
