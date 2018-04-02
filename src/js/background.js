@@ -30,12 +30,29 @@ chrome.runtime.onInstalled.addListener(function () {
     chrome.webRequest.onBeforeRequest.addListener(
         (details) => {
             if (isDisabled) {
-                return;
+                return unExcludeResults(details);
             }
             return modifyRequestToExcludeResults(details);
 
         }, {urls: ["http://*/search*", "https://*/search*"]}, ['blocking']);
 });
+
+
+function unExcludeResults(requestDetails) {
+    const URISections = requestDetails.url.split("?");
+    let nonQueryURI = URISections[0];
+    let fullQueryString = querystring.parse(URISections[1]);
+
+    let searchQuery = fullQueryString.q || fullQueryString.oq;
+
+    searchQuery = searchQuery.replace(/\-site:\*\.pinterest\.\*/, "");
+    console.log("replaced", searchQuery);
+
+    fullQueryString.q = searchQuery;
+    fullQueryString.oq = searchQuery;
+
+    return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
+}
 
 
 function modifyRequestToExcludeResults(requestDetails) {
@@ -53,6 +70,7 @@ function modifyRequestToExcludeResults(requestDetails) {
 
     return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
 }
+
 
 
 function monitorIsDisabled(changes, namespace) {
