@@ -10,9 +10,9 @@ let isDisabled = false;
 
 chrome.runtime.onStartup.addListener(function () {
     -
-    chrome.storage.sync.get('isDisabled', function (data) {
-        isDisabled = data.isDisabled;
-    });
+        chrome.storage.sync.get('isDisabled', function (data) {
+            isDisabled = data.isDisabled;
+        });
 });
 
 
@@ -43,29 +43,19 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 
+
 function unExcludeResults(requestDetails) {
-    const URISections = requestDetails.url.split("?");
-    let nonQueryURI = URISections[0];
-    let fullQueryString = querystring.parse(URISections[1]);
-
-    let searchQuery = fullQueryString.q || fullQueryString.oq;
-
+    let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
     searchQuery = searchQuery.replace(/\-site:\*\.pinterest\.\*/, "");
-
-
     fullQueryString.q = searchQuery;
     fullQueryString.oq = searchQuery;
-
     return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
 }
 
 
 function modifyRequestToExcludeResults(requestDetails) {
-    const URISections = requestDetails.url.split("?");
-    let nonQueryURI = URISections[0];
-    let fullQueryString = querystring.parse(URISections[1]);
 
-    let searchQuery = fullQueryString.q || fullQueryString.oq;
+    let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
 
     if (searchQuery && searchQuery.indexOf("-site:*.pinterest.*") === -1) {
         searchQuery += " -site:*.pinterest.*";
@@ -76,6 +66,19 @@ function modifyRequestToExcludeResults(requestDetails) {
     return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
 }
 
+function getParsedUrl(url) {
+    const URISections = url.split("?");
+    let nonQueryURI = URISections[0];
+    let fullQueryString = querystring.parse(URISections[1]);
+
+    let searchQuery = fullQueryString.q || fullQueryString.oq;
+
+    return {
+        nonQueryURI,
+        searchQuery,
+        fullQueryString
+    }
+}
 
 
 function monitorIsDisabled(changes, namespace) {
