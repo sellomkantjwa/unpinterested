@@ -2,15 +2,16 @@
 
 import "../img/unpinterested.png";
 import querystring from "querystring";
+const URL = require("url-parse");
 
 let isDisabled = false;
 
 
 chrome.runtime.onStartup.addListener(function () {
-    -
-        chrome.storage.sync.get('isDisabled', function (data) {
-            isDisabled = data.isDisabled;
-        });
+
+    chrome.storage.sync.get('isDisabled', function (data) {
+        isDisabled = data.isDisabled;
+    });
 });
 
 
@@ -32,6 +33,13 @@ chrome.runtime.onInstalled.addListener(function () {
 
     chrome.webRequest.onBeforeRequest.addListener(
         (details) => {
+
+            const host = URL(details.url).host;
+            console.log(host);  
+            if (!/^([a-zA-Z\d-]+\.){0,}google\.([a-z\.])+$/.test(host)) {
+                return;
+            }
+
             if (isDisabled) {
                 return unExcludeResults(details);
             }
@@ -52,6 +60,7 @@ function unExcludeResults(requestDetails) {
 
 
 function modifyRequestToExcludeResults(requestDetails) {
+
 
     let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
 
