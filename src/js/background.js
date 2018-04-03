@@ -1,8 +1,6 @@
 'use strict';
 
-import "../img/get_started16.png";
-import "../img/get_started32.png";
-import "../img/get_started48.png";
+import "../img/unpinterested.png";
 import querystring from "querystring";
 
 let isDisabled = false;

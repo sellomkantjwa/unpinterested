@@ -20,9 +20,9 @@
     "default_popup": "popup.html"
   },
   "icons": {
-    "16": "get_started16.png",
-    "32": "get_started32.png",
-    "48": "get_started48.png"
+    "16": "unpinterested.png",
+    "32": "unpinterested.png",
+    "48": "unpinterested.png"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
