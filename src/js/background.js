@@ -8,7 +8,6 @@ let isDisabled = false;
 
 
 chrome.runtime.onStartup.addListener(function () {
-
     chrome.storage.sync.get('isDisabled', function (data) {
         isDisabled = data.isDisabled;
     });
@@ -35,7 +34,7 @@ chrome.runtime.onInstalled.addListener(function () {
         (details) => {
 
             const host = URL(details.url).host;
-            console.log(host);  
+
             if (!/^([a-zA-Z\d-]+\.){0,}google\.([a-z\.])+$/.test(host)) {
                 return;
             }
