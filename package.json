@@ -1,6 +1,6 @@
 {
   "name": "unpinterested",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Exclude Pinterest from google search results",
   "scripts": {
     "build": "node utils/build.js",
