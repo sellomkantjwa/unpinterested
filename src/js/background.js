@@ -1,6 +1,7 @@
 'use strict';
 
 import "../img/unpinterested.png";
+import "../img/unpinterested_128x128.png";
 import querystring from "querystring";
 const URL = require("url-parse");
 
@@ -63,7 +64,7 @@ function modifyRequestToExcludeResults(requestDetails) {
 
     let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
 
-    if (searchQuery && searchQuery.indexOf("-site:*.pinterest.*") === -1) {
+    if (searchQuery && searchQuery.indexOf("-site:pinterest.*") === -1) {
         searchQuery += " -site:*.pinterest.*";
         fullQueryString.q = searchQuery;
         fullQueryString.oq = searchQuery;
