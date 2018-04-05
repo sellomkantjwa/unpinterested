@@ -6,7 +6,8 @@ import querystring from "querystring";
 const URL = require("url-parse");
 
 let isDisabled = false;
-
+const exclusionRegexString = "-site:pinterest.*";
+const exclusionRegex = /\-site:pinterest\.\*/;
 
 chrome.runtime.onStartup.addListener(function () {
     chrome.storage.sync.get('isDisabled', function (data) {
@@ -64,8 +65,8 @@ function modifyRequestToExcludeResults(requestDetails) {
 
     let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
 
-    if (searchQuery && searchQuery.indexOf("-site:pinterest.*") === -1) {
-        searchQuery += " -site:*.pinterest.*";
+    if (searchQuery && searchQuery.indexOf(exclusionRegexString) === -1) {
+        searchQuery += (" " + exclusionRegexString);
         fullQueryString.q = searchQuery;
         fullQueryString.oq = searchQuery;
     }
