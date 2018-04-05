@@ -1,5 +1,9 @@
 # A Chrome extension to remove Pinterest from Google search results
 
+
+[On the Chrome store](https://chrome.google.com/webstore/detail/unpinterested/gefaihkenmchjmcpcbpdijpoknfjpbfe)
+
+
 ## WHY?
 
 [_Pinterest ruins Google search image search_](https://www.google.com/search?rlz=1C1CHBD_enZA786ZA787&q=pinterest+ruins+google+image+search&sa=X&ved=0ahUKEwiemdCDmaHaAhXpB8AKHZheBIQQ1QIIngEoAQ&biw=1366&bih=662)
