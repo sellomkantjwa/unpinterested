@@ -16,39 +16,8 @@ chrome.runtime.onStartup.addListener(function () {
 });
 
 
-chrome.runtime.onInstalled.addListener(function () {
-
-    chrome.storage.sync.get('isDisabled', function (data) {
-        isDisabled = data.isDisabled || false;
-    });
-
-    chrome.storage.onChanged.addListener(monitorIsDisabled);
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-        chrome.declarativeContent.onPageChanged.addRules([{
-            conditions: [new chrome.declarativeContent.PageStateMatcher()
-            ],
-            actions: [new chrome.declarativeContent.ShowPageAction()]
-        }]);
-    });
-
-
-    chrome.webRequest.onBeforeRequest.addListener(
-        (details) => {
-
-            const host = URL(details.url).host;
-
-            if (!/^([a-zA-Z\d-]+\.){0,}google\.([a-z\.])+$/.test(host)) {
-                return;
-            }
-
-            if (isDisabled) {
-                return unExcludeResults(details);
-            }
-            return modifyRequestToExcludeResults(details);
-
-        }, {urls: ["http://*/search*", "https://*/search*"]}, ['blocking']);
-});
-
+chrome.runtime.onInstalled.addListener(initialize);
+chrome.runtime.onStartup.addListener(initialize);
 
 
 function unExcludeResults(requestDetails) {
@@ -92,5 +61,39 @@ function getParsedUrl(url) {
 function monitorIsDisabled(changes, namespace) {
     if (changes.isDisabled) {
         isDisabled = changes.isDisabled.newValue;
+    }
+}
+
+function initialize() {
+    {
+        chrome.storage.sync.get('isDisabled', function (data) {
+            isDisabled = data.isDisabled || false;
+        });
+
+        chrome.storage.onChanged.addListener(monitorIsDisabled);
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+            chrome.declarativeContent.onPageChanged.addRules([{
+                conditions: [new chrome.declarativeContent.PageStateMatcher()
+                ],
+                actions: [new chrome.declarativeContent.ShowPageAction()]
+            }]);
+        });
+
+
+        chrome.webRequest.onBeforeRequest.addListener(
+            (details) => {
+
+                const host = URL(details.url).host;
+
+                if (!/^([a-zA-Z\d-]+\.){0,}google\.([a-z\.])+$/.test(host)) {
+                    return;
+                }
+
+                if (isDisabled) {
+                    return unExcludeResults(details);
+                }
+                return modifyRequestToExcludeResults(details);
+
+            }, {urls: ["http://*/search*", "https://*/search*"]}, ['blocking']);
     }
 }
