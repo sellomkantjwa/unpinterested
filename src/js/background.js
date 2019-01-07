@@ -22,7 +22,7 @@ chrome.runtime.onStartup.addListener(initialize);
 
 function unExcludeResults(requestDetails) {
     let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
-    searchQuery = searchQuery.replace(/\-site:pinterest\.\*/, "");
+    searchQuery = searchQuery.replace(exclusionRegex, "");
     fullQueryString.q = searchQuery;
     fullQueryString.oq = searchQuery;
     return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
