@@ -3,3 +3,4 @@ build
 secrets.*.js
 yarn*
 .idea/
+build.zip
