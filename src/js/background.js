@@ -3,9 +3,11 @@
 import "../img/unpinterested.png";
 import "../img/unpinterested_128x128.png";
 import querystring from "querystring";
+
 const URL = require("url-parse");
 
 let isDisabled = false;
+let enableForAllSearches = false;
 const exclusionRegexString = "-site:pinterest.*";
 const exclusionRegex = /\-site:pinterest\.\*/;
 
@@ -28,7 +30,6 @@ function unExcludeResults(requestDetails) {
     return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
 }
 
-
 function modifyRequestToExcludeResults(requestDetails) {
 
 
@@ -50,6 +51,7 @@ function getParsedUrl(url) {
 
     let searchQuery = fullQueryString.q || fullQueryString.oq;
 
+
     return {
         nonQueryURI,
         searchQuery,
@@ -64,13 +66,26 @@ function monitorIsDisabled(changes, namespace) {
     }
 }
 
+function monitorEnableForAllSearches(changes, namespace) {
+    if (changes.enableForAllSearches) {
+        enableForAllSearches = changes.enableForAllSearches.newValue;
+    }
+}
+
 function initialize() {
     {
         chrome.storage.sync.get('isDisabled', function (data) {
             isDisabled = data.isDisabled || false;
         });
 
+        chrome.storage.sync.get('enableForAllSearches', function (data) {
+            isDisabled = data.enableForAllSearches || false;
+        });
+
         chrome.storage.onChanged.addListener(monitorIsDisabled);
+        chrome.storage.onChanged.addListener(monitorEnableForAllSearches);
+
+
         chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
             chrome.declarativeContent.onPageChanged.addRules([{
                 conditions: [new chrome.declarativeContent.PageStateMatcher()
@@ -89,9 +104,16 @@ function initialize() {
                     return;
                 }
 
+
                 if (isDisabled) {
                     return unExcludeResults(details);
                 }
+
+                let {fullQueryString} = getParsedUrl(details.url);
+                if (!enableForAllSearches && fullQueryString.tbm !== "isch") {
+                    return unExcludeResults(details);
+                }
+
                 return modifyRequestToExcludeResults(details);
 
             }, {urls: ["http://*/search*", "https://*/search*"]}, ['blocking']);

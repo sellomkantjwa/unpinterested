@@ -6,10 +6,9 @@
         body {
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
         }
- 
+
         .wrapper {
-            width: 180px;
-            height: 200px;
+            width: 240px;
             display: flex;
             flex-direction: column;
             font-size: 14px;
@@ -25,12 +24,20 @@
             font-weight: 500;
         }
 
-
         .switch {
             position: relative;
             display: inline-block;
             width: 60px;
             height: 34px;
+        }
+
+        .muted {
+            opacity: 0.6;
+        }
+
+        .switch.small {
+            width: 48px;
+            height: 20px;
         }
 
         /* Hide default HTML checkbox */
@@ -65,47 +72,113 @@
             transition: .4s;
         }
 
-        input:checked+.slider {
+        .small .slider:before {
+            height: 13px;
+            width: 13px;
+        }
+
+        input:checked + .slider {
             background-color: #C03221;
         }
 
-        input:focus+.slider {
+        input:focus + .slider {
             box-shadow: 0 0 1px #C03221;
         }
 
-        input:checked+.slider:before {
+        input:checked + .slider:before {
             -webkit-transform: translateX(26px);
             -ms-transform: translateX(26px);
             transform: translateX(26px);
         }
+
+        #advancedSettingToggle {
+            text-decoration: underline;
+            font-size: 11px;
+            opacity: 0.8;
+            cursor: pointer;
+            font-style: italic;
+        }
+
+        #advancedSection {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+        }
+
+        .small-container {
+            padding: 10px;
+        }
+
+        section {
+            margin: 10px;
+        }
+
+        #enable-for-all-searches-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
     </style>
 
 
 </head>
 
 <body>
-    <div class="wrapper">
+<div class="wrapper">
 
+    <section>
         <div id="title">
-
-            <img width="32px" src="/unpinterested.png" />
+            <img width="32px" src="/unpinterested.png"/>
             <br/> Unpinterested!
         </div>
+    </section>
 
-        <label class="switch">
+    <section>
+        <label class="switch ">
             <input type="checkbox" id="toggleOnOffBtn">
             <span class="slider round"></span>
         </label>
 
-        <div id="description">
-            Exluding pinterest results
+
+        <div class="small-container" id="description">
+            Exluding Pinterest results
+        </div>
+    </section>
+
+    <section>
+        <hr style="width: 80%;opacity: 0.4;"/>
+
+        <div class="small-container" id="advancedSettingToggle">
+            advanced settings
         </div>
 
-    </div>
-    <script src="/popup.bundle.js"></script>
+        <div id="advancedSection">
+
+            <div id="enable-for-all-searches-label" class="small-container">
+                Enable for ALL searches
+            </div>
+
+            <label class="switch small">
+                <input type="checkbox" id="enableForAllSearchesToggleBtn">
+                <span class="slider round"></span>
+            </label>
+
+            <div class="small-container muted" style="font-size: 10px">
+
+                By default Unpinterested will only block Pinterest on image search.
+                Enabling this option will try to block Pinterest for all searches. Note that this might give some
+                unexpected
+                results for non image searches.
+
+            </div>
+
+        </div>
+    </section>
+</div>
+<script src="/popup.bundle.js"></script>
 </body>
-
-
 
 
 </html>
