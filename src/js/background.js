@@ -20,6 +20,11 @@ chrome.runtime.onStartup.addListener(function () {
 
 chrome.runtime.onInstalled.addListener(initialize);
 chrome.runtime.onStartup.addListener(initialize);
+chrome.runtime.onInstalled.addListener(function (object) {
+    chrome.tabs.create({url: "https://www.buymeacoffee.com/wDWve46U2"}, function (tab) {
+
+    });
+});
 
 
 function unExcludeResults(requestDetails) {
@@ -58,7 +63,6 @@ function getParsedUrl(url) {
         fullQueryString
     }
 }
-
 
 function monitorIsDisabled(changes, namespace) {
     if (changes.isDisabled) {
