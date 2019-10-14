@@ -49,3 +49,4 @@ function setDescriptionText(isDisabled) {
         descriptionDiv.innerHTML = "Excluding pinterest results";
     }
 }
+

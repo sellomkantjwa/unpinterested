@@ -3,11 +3,16 @@
   "version": "0.2.1",
   "description": "Remove Pinterest from Google search results",
   "manifest_version": 2,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "unpinterested@sello.mkantjwa.com"
+    }
+  },
   "permissions": [
     "storage",
-    "declarativeContent",
     "activeTab",
     "webRequest",
+    "declarativeContent",
     "webRequestBlocking",
     "*://*.google.com/",
     "*://*.google.ad/",
@@ -209,7 +214,11 @@
     ]
   },
   "page_action": {
-    "default_popup": "popup.html"
+    "default_popup": "/popup.html"
+  },
+  "browser_action": {
+    "default_icon": "/unpinterested.png",
+    "default_popup": "/popup.html"
   },
   "icons": {
     "16": "/unpinterested.png",

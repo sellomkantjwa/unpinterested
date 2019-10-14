@@ -20,33 +20,38 @@ chrome.runtime.onStartup.addListener(function () {
 
 chrome.runtime.onInstalled.addListener(initialize);
 chrome.runtime.onStartup.addListener(initialize);
-chrome.runtime.onInstalled.addListener(function (object) {
-    chrome.tabs.create({url: "https://www.buymeacoffee.com/wDWve46U2"}, function (tab) {
-
-    });
-});
+// chrome.runtime.onInstalled.addListener(function (object) {
+//     chrome.tabs.create({url: "https://www.buymeacoffee.com/wDWve46U2"}, function (tab) {
+//
+//     });
+// });
 
 
 function unExcludeResults(requestDetails) {
     let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
-    searchQuery = searchQuery.replace(exclusionRegex, "");
-    fullQueryString.q = searchQuery;
-    fullQueryString.oq = searchQuery;
-    return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
+    const newSearchQuery = searchQuery.replace(exclusionRegex, "");
+    fullQueryString.q = newSearchQuery;
+    fullQueryString.oq = newSearchQuery;
+
+    if (searchQuery !== newSearchQuery) {
+        return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
+    }
+
 }
 
 function modifyRequestToExcludeResults(requestDetails) {
 
-
     let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
 
     if (searchQuery && searchQuery.indexOf(exclusionRegexString) === -1) {
-        searchQuery += (" " + exclusionRegexString);
-        fullQueryString.q = searchQuery;
-        fullQueryString.oq = searchQuery;
-    }
+        const newSearchQuery = searchQuery + (" " + exclusionRegexString);
+        fullQueryString.q = newSearchQuery;
+        fullQueryString.oq = newSearchQuery;
 
-    return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
+        if (searchQuery !== newSearchQuery) {
+            return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
+        }
+    }
 }
 
 function getParsedUrl(url) {
@@ -90,7 +95,7 @@ function initialize() {
         chrome.storage.onChanged.addListener(monitorEnableForAllSearches);
 
 
-        chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+        chrome.declarativeContent && chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
             chrome.declarativeContent.onPageChanged.addRules([{
                 conditions: [new chrome.declarativeContent.PageStateMatcher()
                 ],
@@ -120,6 +125,6 @@ function initialize() {
 
                 return modifyRequestToExcludeResults(details);
 
-            }, {urls: ["http://*/search*", "https://*/search*"]}, ['blocking']);
+            }, {urls: ["http://*/search?*", "https://*/search?*"]}, ['blocking']);
     }
 }
