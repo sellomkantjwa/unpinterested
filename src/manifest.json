@@ -1,11 +1,11 @@
 {
   "name": "Unpinterested!",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Remove Pinterest from Google search results",
   "manifest_version": 2,
   "browser_specific_settings": {
     "gecko": {
-      "id": "unpinterested@sello.mkantjwa.com"
+      "id": "firefox@unpinterested"
     }
   },
   "permissions": [
@@ -212,9 +212,6 @@
     "scripts": [
       "background.bundle.js"
     ]
-  },
-  "page_action": {
-    "default_popup": "/popup.html"
   },
   "browser_action": {
     "default_icon": "/unpinterested.png",
