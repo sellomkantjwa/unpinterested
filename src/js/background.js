@@ -23,7 +23,7 @@ chrome.runtime.onStartup.addListener(initialize);
 chrome.runtime.onInstalled.addListener(function (object) {
 
     if (object.reason === 'install') {
-        chrome.tabs.create({url: "https://www.buymeacoffee.com/wDWve46U2"}, function (tab) {
+        chrome.tabs.create({url: "https://www.buymeacoffee.com/wDWve46U2?ref=install"}, function (tab) {
 
         });
     }
