@@ -222,5 +222,5 @@
     "48": "/unpinterested.png",
     "128": "/unpinterested_128x128.png"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": "script-src 'self' ; object-src 'self'"
 }
