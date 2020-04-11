@@ -83,7 +83,11 @@ var options = {
             filename: "background.html",
             chunks: ["background"]
         }),
-        new WriteFilePlugin()
+        new WriteFilePlugin(),
+        new webpack.ProvidePlugin({
+            global: require.resolve('./global.js')
+        })
+
     ],
     optimization: {
         minimize: false
