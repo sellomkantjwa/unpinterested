@@ -19,3 +19,10 @@
 [block pinterest results](https://www.google.com/search?rlz=1C1CHBD_enZA786ZA787&q=block+pinterest+results&sa=X&ved=0ahUKEwjugYHXnKHaAhWlCMAKHb4eAWgQ1QII0gEoAw&biw=1366&bih=662) 
 
 etc...
+
+# To Build
+
+ - run `npm run release`. This produces a build.zip archive that can be uploaded to the Chrome/Firefox store. Note if you do not
+ have `zip` installed, you can run `npm run build` and zip the resultant directory manually. 
+ 
+
