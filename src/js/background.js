@@ -7,7 +7,7 @@ import querystring from "querystring";
 const URL = require("url-parse");
 
 let isDisabled = false;
-let enableForAllSearches = false;
+let enableForAllSearches = true;
 const exclusionRegexString = "-site:pinterest.*";
 const exclusionRegex = /\-site:pinterest\.\*/;
 
@@ -87,16 +87,24 @@ function monitorEnableForAllSearches(changes, namespace) {
 function initialize() {
     {
         chrome.storage.sync.get('isDisabled', function (data) {
+            console.log("isDisabled", isDisabled);
             isDisabled = data.isDisabled || false;
+
+            if (data.isDisabled === undefined) {
+                chrome.storage.sync.set({isDisabled: isDisabled})
+            }
         });
 
         chrome.storage.sync.get('enableForAllSearches', function (data) {
-            isDisabled = data.enableForAllSearches || false;
+            console.log("enableForAllSearches", data, data.enableForAllSearches);
+            if (data.enableForAllSearches === undefined) {
+                chrome.storage.sync.set({enableForAllSearches: true})
+            }
+            enableForAllSearches = data.enableForAllSearches !== false;
         });
 
         chrome.storage.onChanged.addListener(monitorIsDisabled);
         chrome.storage.onChanged.addListener(monitorEnableForAllSearches);
-
 
         chrome.declarativeContent && chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
             chrome.declarativeContent.onPageChanged.addRules([{

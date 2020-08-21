@@ -1,4 +1,4 @@
-var webpack = require("webpack"),
+const webpack = require("webpack"),
     path = require("path"),
     fileSystem = require("fs"),
     env = require("./utils/env"),
@@ -21,7 +21,6 @@ if (fileSystem.existsSync(secretsPath)) {
 var options = {
     entry: {
         popup: path.join(__dirname, "src", "js", "popup.js"),
-        options: path.join(__dirname, "src", "js", "options.js"),
         background: path.join(__dirname, "src", "js", "background.js")
     },
     output: {
@@ -52,7 +51,7 @@ var options = {
     },
     plugins: [
         // clean the build folder
-        new CleanWebpackPlugin(["build"]),
+        // new CleanWebpackPlugin(["build"]),
         // expose and write the allowed env vars on the compiled bundle
         new webpack.DefinePlugin({
             "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)
@@ -74,11 +73,6 @@ var options = {
             chunks: ["popup"]
         }),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src", "options.html"),
-            filename: "options.html",
-            chunks: ["options"]
-        }),
-        new HtmlWebpackPlugin({
             template: path.join(__dirname, "src", "background.html"),
             filename: "background.html",
             chunks: ["background"]
@@ -87,7 +81,6 @@ var options = {
         new webpack.ProvidePlugin({
             global: require.resolve('./global.js')
         })
-
     ],
     optimization: {
         minimize: false
