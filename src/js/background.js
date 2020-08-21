@@ -106,13 +106,13 @@ function initialize() {
         chrome.storage.onChanged.addListener(monitorIsDisabled);
         chrome.storage.onChanged.addListener(monitorEnableForAllSearches);
 
-        chrome.declarativeContent && chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-            chrome.declarativeContent.onPageChanged.addRules([{
-                conditions: [new chrome.declarativeContent.PageStateMatcher()
-                ],
-                actions: [new chrome.declarativeContent.ShowPageAction()]
-            }]);
-        });
+        // chrome.declarativeContent && chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+        //     chrome.declarativeContent.onPageChanged.addRules([{
+        //         conditions: [new chrome.declarativeContent.PageStateMatcher()
+        //         ],
+        //         actions: [new chrome.declarativeContent.ShowPageAction()]
+        //     }]);
+        // });
 
 
         chrome.webRequest.onBeforeRequest.addListener(
