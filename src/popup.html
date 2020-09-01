@@ -8,7 +8,7 @@
         }
 
         .wrapper {
-            width: 240px;
+            width: 320px;
             display: flex;
             flex-direction: column;
             font-size: 14px;
@@ -94,14 +94,14 @@
 
         #advancedSettingToggle {
             text-decoration: underline;
-            font-size: 11px;
+            font-size: 12px;
             opacity: 0.8;
             cursor: pointer;
             font-style: italic;
         }
 
         #advancedSection {
-            display: none;
+            display: flex;
             text-align: left;
             align-items: center;
             justify-content: center;
@@ -159,7 +159,7 @@
         <div id="advancedSection">
 
             <div id="enable-for-all-searches-label" class="small-container">
-                Enable for ALL searches
+                Enable for non image searches?
             </div>
 
             <label class="switch small">
@@ -167,11 +167,10 @@
                 <span class="slider round"></span>
             </label>
 
-            <div class="small-container muted" style="font-size: 11px">
-
-                By default Unpinterested! will block ALL Pinterest results.If you are getting unexpected results from
-                searches for things like map or any other non images searches, you can try disabling Unpinterested!
-                for non-image search and it will only block Pinterest on image searches.
+            <div class="small-container muted" style="font-size: 12px">
+                By default Unpinterested! will only block Pinterest on image search.
+                Enabling this option will try to block Pinterest for all searches. Note that this might give some
+                unexpected results for non-image searches.
             </div>
         </div>
     </section>

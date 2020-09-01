@@ -98,9 +98,9 @@ function initialize() {
         chrome.storage.sync.get('enableForAllSearches', function (data) {
             console.log("enableForAllSearches", data, data.enableForAllSearches);
             if (data.enableForAllSearches === undefined) {
-                chrome.storage.sync.set({enableForAllSearches: true})
+                chrome.storage.sync.set({enableForAllSearches: false})
             }
-            enableForAllSearches = data.enableForAllSearches !== false;
+            enableForAllSearches = !!data.enableForAllSearches;
         });
 
         chrome.storage.onChanged.addListener(monitorIsDisabled);
