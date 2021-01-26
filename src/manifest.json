@@ -1,6 +1,6 @@
 {
   "name": "Unpinterested!",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Remove Pinterest from Google search results",
   "manifest_version": 2,
   "browser_specific_settings": {
