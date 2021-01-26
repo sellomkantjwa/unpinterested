@@ -44,7 +44,7 @@ advancedSettingToggle.onclick = function toggleAdvancedSetting() {
 
 function setDescriptionText(isDisabled) {
     if (isDisabled) {
-        descriptionDiv.innerHTML = "Not excluding pinterest results";
+        descriptionDiv.innerHTML = "Not excluding pinterest results ";
     } else {
         descriptionDiv.innerHTML = "Excluding pinterest results";
     }
