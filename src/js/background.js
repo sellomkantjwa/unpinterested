@@ -28,6 +28,9 @@ chrome.runtime.onInstalled.addListener(function (object) {
         });
     }
 });
+chrome.runtime.setUninstallURL('https://docs.google.com/forms/d/1faYdMUgZC_fstuOiLvQ4dg6YZ-t3613RrKpghnS2djg', ()=>{
+    console.log('uninstall URL set')
+});
 
 
 function unExcludeResults(requestDetails) {
