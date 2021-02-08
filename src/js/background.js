@@ -106,14 +106,6 @@ function initialize() {
         chrome.storage.onChanged.addListener(monitorIsDisabled);
         chrome.storage.onChanged.addListener(monitorEnableForAllSearches);
 
-        // chrome.declarativeContent && chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-        //     chrome.declarativeContent.onPageChanged.addRules([{
-        //         conditions: [new chrome.declarativeContent.PageStateMatcher()
-        //         ],
-        //         actions: [new chrome.declarativeContent.ShowPageAction()]
-        //     }]);
-        // });
-
 
         chrome.webRequest.onBeforeRequest.addListener(
             (details) => {
@@ -130,6 +122,11 @@ function initialize() {
                 }
 
                 let {fullQueryString} = getParsedUrl(details.url);
+
+                if( fullQueryString.tbm === "map"){
+                    return unExcludeResults(details);
+                }
+
                 if (!enableForAllSearches && fullQueryString.tbm !== "isch") {
                     return unExcludeResults(details);
                 }
