@@ -34,15 +34,10 @@ chrome.runtime.setUninstallURL('https://docs.google.com/forms/d/1faYdMUgZC_fstuO
 
 
 function unExcludeResults(requestDetails) {
-    let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
-    const newSearchQuery = searchQuery.replace(exclusionRegex, "");
-    fullQueryString.q = newSearchQuery;
-    fullQueryString.oq = newSearchQuery;
-
-    if (searchQuery !== newSearchQuery) {
-        return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
+    let redirectUrl = requestDetails.url.replace(exclusionRegexString, '');    
+    if (requestDetails.url !== redirectUrl) {
+        return {redirectUrl};
     }
-
 }
 
 function modifyRequestToExcludeResults(requestDetails) {
@@ -50,7 +45,7 @@ function modifyRequestToExcludeResults(requestDetails) {
     let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
 
     if (searchQuery && searchQuery.indexOf(exclusionRegexString) === -1) {
-        const newSearchQuery = searchQuery + (" " + exclusionRegexString);
+        const newSearchQuery = `${exclusionRegexString} ${searchQuery}`;
         fullQueryString.q = newSearchQuery;
         fullQueryString.oq = newSearchQuery;
 
@@ -118,17 +113,16 @@ function initialize() {
                 if (!/^([a-zA-Z\d-]+\.){0,}google\.([a-z\.])+$/.test(host)) {
                     return;
                 }
-
-
+                
+                if (/google\.[a-zA-Z]+(\.[a-zA-Z]+)?\/maps/.test(details.url)){
+                    return unExcludeResults(details);
+                }
+                
                 if (isDisabled) {
                     return unExcludeResults(details);
                 }
 
                 let {fullQueryString} = getParsedUrl(details.url);
-
-                if( fullQueryString.tbm === "map"){
-                    return unExcludeResults(details);
-                }
 
                 if (!enableForAllSearches && fullQueryString.tbm !== "isch") {
                     return unExcludeResults(details);
@@ -136,6 +130,6 @@ function initialize() {
 
                 return modifyRequestToExcludeResults(details);
 
-            }, {urls: ["http://*/search?*", "https://*/search?*"]}, ['blocking']);
+            }, {urls: ["http://*/search?*", "https://*/search?*", "http://*/maps/search*", "https://*/maps/search*", "http://*/maps?*", "https://*/maps?*"]}, ['blocking']);
     }
 }
