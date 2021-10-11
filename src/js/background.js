@@ -43,30 +43,27 @@ function unExcludeResults(requestDetails) {
 
 function modifyRequestToExcludeResults(requestDetails) {
 
-    let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
-    
     if(_ignoreIntercept){
         _ignoreIntercept = false;
+        return undefined;
+    }
+
+    let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
+
+    let newSearchQuery = searchQuery;
+
+    if(searchQuery && searchQuery.includes('pignore')){
+        newSearchQuery = searchQuery.replace('pignore','').replace(exclusionRegexString, '');
+        _ignoreIntercept = true;
     }
     else if(searchQuery && searchQuery.indexOf(exclusionRegexString) === -1 ) {
-        let newSearchQuery = searchQuery;
-
-        if(searchQuery.includes('pignore')){
-            newSearchQuery = searchQuery.replace('pignore', '');
-            _ignoreIntercept = true;
-        }
-        else{
-            newSearchQuery = `${exclusionRegexString} ${searchQuery}`;
-        }
-            
-        
-        fullQueryString.q = newSearchQuery;
-        fullQueryString.oq = newSearchQuery;
-
-        if (searchQuery !== newSearchQuery) {
-            return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
-        }
+        newSearchQuery = `${exclusionRegexString} ${searchQuery}`;
     }
+                
+    fullQueryString.q = newSearchQuery;
+    fullQueryString.oq = newSearchQuery;
+
+    if (searchQuery !== newSearchQuery) return {redirectUrl: `${nonQueryURI}?${querystring.stringify(fullQueryString)}`};
 }
 
 function getParsedUrl(url) {
