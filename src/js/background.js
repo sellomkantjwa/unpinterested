@@ -5,6 +5,7 @@ import "../img/unpinterested_128x128.png";
 import querystring from "querystring";
 
 const URL = require("url-parse");
+var _ignoreIntercept = false;
 
 let isDisabled = false;
 let enableForAllSearches = true;
@@ -43,9 +44,22 @@ function unExcludeResults(requestDetails) {
 function modifyRequestToExcludeResults(requestDetails) {
 
     let {nonQueryURI, searchQuery, fullQueryString} = getParsedUrl(requestDetails.url);
+    
+    if(_ignoreIntercept){
+        _ignoreIntercept = false;
+    }
+    else if(searchQuery && searchQuery.indexOf(exclusionRegexString) === -1 ) {
+        let newSearchQuery = searchQuery;
 
-    if (searchQuery && searchQuery.indexOf(exclusionRegexString) === -1) {
-        const newSearchQuery = `${exclusionRegexString} ${searchQuery}`;
+        if(searchQuery.includes('pignore')){
+            newSearchQuery = searchQuery.replace('pignore', '');
+            _ignoreIntercept = true;
+        }
+        else{
+            newSearchQuery = `${exclusionRegexString} ${searchQuery}`;
+        }
+            
+        
         fullQueryString.q = newSearchQuery;
         fullQueryString.oq = newSearchQuery;
 
@@ -113,7 +127,7 @@ function initialize() {
                 if (!/^([a-zA-Z\d-]+\.){0,}google\.([a-z\.])+$/.test(host)) {
                     return;
                 }
-                
+
                 if (/google\.[a-zA-Z]+(\.[a-zA-Z]+)?\/maps/.test(details.url)){
                     return unExcludeResults(details);
                 }
