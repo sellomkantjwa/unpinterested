@@ -1,5 +1,8 @@
 # A Chrome extension to remove Pinterest from Google search results
 
+### NOTE (23 Sep 2023)):
+Unpinterested! has been acquired. This repository is no longer active.
+
 
 [On the Chrome store](https://chrome.google.com/webstore/detail/unpinterested/gefaihkenmchjmcpcbpdijpoknfjpbfe)
 
